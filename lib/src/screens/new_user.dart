@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/main.dart';
+import 'package:desafio_capyba/src/models/add_user_info.dart';
 import 'package:desafio_capyba/src/models/custom_text_field.dart';
 import 'package:desafio_capyba/src/models/loading_window.dart';
 import 'package:desafio_capyba/src/screens/camera_screen.dart';
@@ -27,65 +28,9 @@ class _NewUserPageState extends State<NewUserPage> {
   final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  Duration duration = const Duration(seconds: 3);
-  var userProfilePhoto = '';
-  String userUID = '';
-  String userEmail = '';
+  AddUserInfo addUserInfo = AddUserInfo();
   bool _showPassword = true;
-  File? imageFile;
-
-  Future signUp() async {
-    try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-    } on FirebaseAuthException catch (e) {
-      print(e);
-    }
-  }
-
-  Future createUserDB(String name) async {
-    await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
-      'name': name,
-      'email': _emailController.text.trim(),
-      'profilePhoto': imageFile,
-    });
-    print(user!.uid);
-  }
-
-  void uploadImage() async {
-    try {
-      final pickedFile = await ImagePicker()
-          .pickImage(
-            source: ImageSource.camera,
-            maxWidth: 1800,
-            maxHeight: 1800,
-          )
-          .whenComplete(() => null);
-      if (pickedFile != null && userProfilePhoto != '') {
-        FirebaseStorage.instance.ref().child('users/teste/profilePhoto');
-        setState(() {
-          imageFile = File(pickedFile.path);
-        });
-      }
-
-      final profilephotoRef =
-          FirebaseStorage.instance.ref().child('users/teste/profilePhoto');
-
-      await profilephotoRef.putFile(File(pickedFile!.path));
-      profilephotoRef.getDownloadURL().then((value) {
-        setState(() {
-          FirebaseFirestore.instance.collection('users').doc('teste').set({
-            'profilePhoto': value,
-          });
-          userProfilePhoto = value;
-        });
-      });
-    } catch (e) {
-      print("Erro em upload: $e");
-    }
-  }
+  Duration duration = const Duration(seconds: 3);
 
   void showPassword() {
     setState(() {
@@ -104,7 +49,7 @@ class _NewUserPageState extends State<NewUserPage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: signUp(),
+      future: addUserInfo.signUp(),
       builder: (context, snapshot) => Scaffold(
         backgroundColor: const Color.fromARGB(255, 1, 14, 31),
         body: ListView(
@@ -137,15 +82,16 @@ class _NewUserPageState extends State<NewUserPage> {
 
                   GestureDetector(
                     onTap: () {
-                      uploadImage();
+                      addUserInfo.uploadImage();
                     },
-                    child: userProfilePhoto != ''
+                    child: addUserInfo.userProfilePhoto != ''
                         ? CircleAvatar(
                             backgroundColor:
                                 const Color.fromARGB(255, 1, 14, 31),
                             radius: 100,
                             // child: Image.file(File(widget.imagePath.toString())),
-                            backgroundImage: NetworkImage(userProfilePhoto))
+                            backgroundImage:
+                                NetworkImage(addUserInfo.userProfilePhoto))
                         : const CircleAvatar(
                             backgroundColor: Color.fromARGB(255, 1, 14, 31),
                             radius: 100,
@@ -261,15 +207,16 @@ class _NewUserPageState extends State<NewUserPage> {
                         } else if (_nameController.text.isNotEmpty &&
                             _passwordController.text.isNotEmpty &&
                             _confirmPasswordController.text.isNotEmpty &&
-                            imageFile.toString().isNotEmpty) {
+                            addUserInfo.imageFile.toString().isNotEmpty) {
                           showDialog(
                               context: context,
                               builder: (context) {
                                 return const LoadingWindow();
                               });
-                          createUserDB(_nameController.text.trim())
+                          addUserInfo
+                              .createUserDB(_nameController.text.trim())
                               .whenComplete(() {
-                            signUp();
+                            addUserInfo.signUp();
                           }).whenComplete(() => Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) => const HomePage())));

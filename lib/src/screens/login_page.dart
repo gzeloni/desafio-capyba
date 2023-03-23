@@ -1,3 +1,4 @@
+import 'package:desafio_capyba/src/functions/sign_in.dart';
 import 'package:desafio_capyba/src/models/welcome.dart';
 import 'package:desafio_capyba/src/screens/home.dart';
 import 'package:desafio_capyba/src/screens/new_user.dart';
@@ -18,31 +19,6 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   Duration duration = const Duration(seconds: 3);
   bool _showPassword = true;
-
-  Future signIn() async {
-    try {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return const HomePage();
-        },
-      );
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      )
-          .then((value) {
-        Navigator.of(context).pop();
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const HomePage()),
-            (route) => false);
-      });
-    } on FirebaseAuthException catch (e) {
-      print(e);
-      Navigator.of(context).pop();
-    }
-  }
 
   @override
   void dispose() {
@@ -186,7 +162,11 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       if (_emailController.text.isNotEmpty &&
                           _passwordController.text.isNotEmpty) {
-                        signIn();
+                        SignIn(
+                          context: context,
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
+                        ).signIn();
                       } else {
                         showDialog(
                           context: context,
