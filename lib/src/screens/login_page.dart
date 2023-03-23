@@ -1,6 +1,4 @@
-import 'package:desafio_capyba/main.dart';
 import 'package:desafio_capyba/src/models/welcome.dart';
-import 'package:desafio_capyba/src/screens/camera_screen.dart';
 import 'package:desafio_capyba/src/screens/home.dart';
 import 'package:desafio_capyba/src/screens/new_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,8 +34,9 @@ class _LoginPageState extends State<LoginPage> {
       )
           .then((value) {
         Navigator.of(context).pop();
-        Navigator.pushNamedAndRemoveUntil(
-            context, 'auth', ModalRoute.withName('/'));
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const HomePage()),
+            (route) => false);
       });
     } on FirebaseAuthException catch (e) {
       print(e);
@@ -187,11 +186,6 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       if (_emailController.text.isNotEmpty &&
                           _passwordController.text.isNotEmpty) {
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return const HomePage();
-                            });
                         signIn();
                       } else {
                         showDialog(
