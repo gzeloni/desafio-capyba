@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,11 +12,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NewUserPage extends StatefulWidget {
-  const NewUserPage({super.key, this.imagePath});
-
-  final String? imagePath;
+  const NewUserPage({super.key});
 
   @override
   State<NewUserPage> createState() => _NewUserPageState();
@@ -31,6 +32,7 @@ class _NewUserPageState extends State<NewUserPage> {
   String userUID = '';
   String userEmail = '';
   bool _showPassword = true;
+  File? imageFile;
 
   Future signUp() async {
     try {
@@ -47,25 +49,34 @@ class _NewUserPageState extends State<NewUserPage> {
     await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
       'name': name,
       'email': _emailController.text.trim(),
-      'profilePhoto': widget.imagePath!,
+      'profilePhoto': imageFile,
     });
     print(user!.uid);
   }
 
   void uploadImage() async {
     try {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => TakePictureScreen(
-                camera: firstCamera,
-              )));
-      final profilephotoRef = FirebaseStorage.instance
-          .ref()
-          .child('users/${user!.uid}/profilePhoto');
+      final pickedFile = await ImagePicker()
+          .pickImage(
+            source: ImageSource.camera,
+            maxWidth: 1800,
+            maxHeight: 1800,
+          )
+          .whenComplete(() => null);
+      if (pickedFile != null && userProfilePhoto != '') {
+        FirebaseStorage.instance.ref().child('users/teste/profilePhoto');
+        setState(() {
+          imageFile = File(pickedFile.path);
+        });
+      }
 
-      await profilephotoRef.putFile(File(widget.imagePath!));
+      final profilephotoRef =
+          FirebaseStorage.instance.ref().child('users/teste/profilePhoto');
+
+      await profilephotoRef.putFile(File(pickedFile!.path));
       profilephotoRef.getDownloadURL().then((value) {
         setState(() {
-          FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
+          FirebaseFirestore.instance.collection('users').doc('teste').set({
             'profilePhoto': value,
           });
           userProfilePhoto = value;
@@ -128,15 +139,13 @@ class _NewUserPageState extends State<NewUserPage> {
                     onTap: () {
                       uploadImage();
                     },
-                    child: widget.imagePath != null
+                    child: userProfilePhoto != ''
                         ? CircleAvatar(
                             backgroundColor:
                                 const Color.fromARGB(255, 1, 14, 31),
                             radius: 100,
                             // child: Image.file(File(widget.imagePath.toString())),
-                            backgroundImage:
-                                FileImage(File(widget.imagePath.toString())),
-                          )
+                            backgroundImage: NetworkImage(userProfilePhoto))
                         : const CircleAvatar(
                             backgroundColor: Color.fromARGB(255, 1, 14, 31),
                             radius: 100,
@@ -252,18 +261,18 @@ class _NewUserPageState extends State<NewUserPage> {
                         } else if (_nameController.text.isNotEmpty &&
                             _passwordController.text.isNotEmpty &&
                             _confirmPasswordController.text.isNotEmpty &&
-                            widget.imagePath.toString().isNotEmpty) {
+                            imageFile.toString().isNotEmpty) {
                           showDialog(
                               context: context,
                               builder: (context) {
                                 return const LoadingWindow();
                               });
-                          signUp().whenComplete(() {
-                            createUserDB(_nameController.text.trim());
-                            uploadImage();
+                          createUserDB(_nameController.text.trim())
+                              .whenComplete(() {
+                            signUp();
                           }).whenComplete(() => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage())));
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage())));
                         } else {
                           showDialog(
                             context: context,

@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/src/screens/new_user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class TakePictureScreen extends StatefulWidget {
@@ -15,8 +20,10 @@ class TakePictureScreen extends StatefulWidget {
 }
 
 class TakePictureScreenState extends State<TakePictureScreen> {
+  final user = FirebaseAuth.instance.currentUser;
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  var userProfilePhoto = '';
 
   @override
   void initState() {
@@ -62,13 +69,34 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
                     final image = await _controller.takePicture();
 
+                    if (userProfilePhoto != '') {
+                      FirebaseStorage.instance
+                          .ref()
+                          .child('users/${user!.uid}/profilePhoto');
+                    }
+
+                    final profilephotoRef = FirebaseStorage.instance
+                        .ref()
+                        .child('users/${user!.uid}/profilePhoto');
+
+                    await profilephotoRef.putFile(File(image.path));
+                    profilephotoRef.getDownloadURL().then((value) {
+                      setState(() {
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(user!.uid)
+                            .set({
+                          'profilePhoto': value,
+                        });
+                        userProfilePhoto = value;
+                      });
+                    });
+
                     if (!mounted) return;
 
                     await Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
-                        builder: (context) => NewUserPage(
-                          imagePath: image.path,
-                        ),
+                        builder: (context) => const NewUserPage(),
                       ),
                       ModalRoute.withName('/'),
                     );

@@ -18,6 +18,7 @@ dependencies:
   iconsax: ^0.0.8
   firebase_storage: ^11.0.16
   cloud_firestore: ^4.4.5
+  image_picker: ^0.8.7
 
 dev_dependencies:
   flutter_test:
