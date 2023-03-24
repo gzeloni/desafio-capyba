@@ -157,12 +157,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         // Quando completar o passo anterior:
       }).whenComplete(() {
         // Navega para a Home Page destruindo a rota anterior.
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const NavBar(),
-          ),
-          ModalRoute.withName('/'),
-        );
+        Navigator.pushNamedAndRemoveUntil(context, '/navbar', (route) => false);
       });
       // Se houver falha no upload:
     } catch (e) {

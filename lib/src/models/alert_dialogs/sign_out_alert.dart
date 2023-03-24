@@ -63,10 +63,8 @@ class _ConfirmSignOutAlertState extends State<ConfirmSignOutAlert> {
                   },
                 );
                 FirebaseAuth.instance.signOut().then((value) =>
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
-                        ModalRoute.withName('/login')));
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/login', (route) => false));
               },
               child: const Text('Sair'),
             ),

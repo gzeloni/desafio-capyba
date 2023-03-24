@@ -35,9 +35,7 @@ class SignIn {
       )
           .then((value) {
         Navigator.of(context).pop();
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const NavBar()),
-            (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, '/navbar', (route) => true);
       });
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();

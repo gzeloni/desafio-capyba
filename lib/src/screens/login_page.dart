@@ -3,7 +3,6 @@ import 'package:desafio_capyba/src/models/alert_dialogs/alert_dialog.dart';
 import 'package:desafio_capyba/src/models/button/button.dart';
 import 'package:desafio_capyba/src/models/text_fields/custom_text_field.dart';
 import 'package:desafio_capyba/src/models/welcome_message/welcome.dart';
-import 'package:desafio_capyba/src/screens/new_user.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -138,11 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => const NewUserPage(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, '/newUser');
                   },
                   child: const Text(
                     'Criar Conta',

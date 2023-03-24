@@ -16,12 +16,10 @@ class CheckLogin extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            /**
-             * A NavBar compõe a tela e mantém uma barra de navegação
-             * na base da tela.
-             * Retornar a NavBar, retorna diretamente a Home e também
-             * a área restrita do app.
-            */
+            /// A NavBar compõe a tela e mantém uma barra de navegação
+            /// na base da tela.
+            /// Retornar a NavBar, retorna diretamente a Home e também
+            /// a área restrita do app.
             return const NavBar();
           } else {
             return const LoginPage();
