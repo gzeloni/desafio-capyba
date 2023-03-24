@@ -1,6 +1,6 @@
 // Dependências do Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:desafio_capyba/src/models/alert_dialogs/scaffold_messenger.dart';
+import 'package:desafio_capyba/src/models/alert_dialogs/custom_snack_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class GetUserInfo {
