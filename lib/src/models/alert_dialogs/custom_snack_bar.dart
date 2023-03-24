@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CustomScaffoldMessenger extends StatefulWidget {
-  const CustomScaffoldMessenger({super.key, required this.text});
+  const CustomScaffoldMessenger({super.key, required this.error});
 
-  final String text;
+  final String error;
+
   @override
   State<CustomScaffoldMessenger> createState() =>
       _CustomScaffoldMessengerState();
@@ -12,6 +13,8 @@ class CustomScaffoldMessenger extends StatefulWidget {
 class _CustomScaffoldMessengerState extends State<CustomScaffoldMessenger> {
   @override
   Widget build(BuildContext context) {
-    return SnackBar(content: Text(widget.text));
+    return Scaffold(
+      body: SnackBar(content: Text("Erro: ${widget.error}")),
+    );
   }
 }

@@ -1,10 +1,15 @@
+// package do Flutter
+import 'package:desafio_capyba/src/models/alert_dialogs/custom_snack_bar.dart';
+import 'package:flutter/material.dart';
+// Dependência do Firebase
+import 'package:firebase_auth/firebase_auth.dart';
+// NavBar e LoadingWindow
 import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
 import 'package:desafio_capyba/src/navbar/navbar.dart';
-import 'package:desafio_capyba/src/screens/home.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class SignIn {
+  /// Essas variáveis recebem dados da
+  /// tela de Login.
   String email;
   String password;
   BuildContext context;
@@ -36,7 +41,9 @@ class SignIn {
       });
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
-      return e;
+      CustomScaffoldMessenger(
+        error: e.toString(),
+      );
     }
   }
 }

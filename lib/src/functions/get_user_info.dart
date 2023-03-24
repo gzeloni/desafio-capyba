@@ -42,7 +42,9 @@ class GetUserInfo {
 
     /// catch capta erros e retorna em um CustomSnackBar no rodapé da tela.
     catch (e) {
-      CustomScaffoldMessenger(text: 'Erro em: $e');
+      CustomScaffoldMessenger(
+        error: e.toString(),
+      );
     }
   }
 }
