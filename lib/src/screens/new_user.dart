@@ -3,14 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/core/camera/get_camera_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:desafio_capyba/src/models/confirm_password_field.dart';
-import 'package:desafio_capyba/src/models/custom_text_field.dart';
-import 'package:desafio_capyba/src/models/loading_window.dart';
-import 'package:desafio_capyba/src/models/password_field.dart';
-import 'package:desafio_capyba/src/models/show_dialog.dart';
-import 'package:desafio_capyba/src/models/button.dart';
+import 'package:desafio_capyba/src/models/text_fields/confirm_password_field.dart';
+import 'package:desafio_capyba/src/models/text_fields/custom_text_field.dart';
+import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
+import 'package:desafio_capyba/src/models/text_fields/password_field.dart';
+import 'package:desafio_capyba/src/models/alert_dialogs/show_dialog.dart';
+import 'package:desafio_capyba/src/models/button/button.dart';
 import 'package:desafio_capyba/src/screens/camera_screen.dart';
 
+// lib/src/models/text_fields
 class NewUserPage extends StatefulWidget {
   const NewUserPage({super.key});
 

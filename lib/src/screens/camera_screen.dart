@@ -3,6 +3,7 @@
 import 'dart:io';
 
 // package do Flutter
+import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
 import 'package:flutter/material.dart';
 // Dependências do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
@@ -141,6 +142,12 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   */
   void uploadImage() async {
     try {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const LoadingWindow();
+        },
+      );
       // Roda o módulo de câmera por uma função assíncrona
       pickedFile = await _controller.takePicture();
 
