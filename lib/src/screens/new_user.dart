@@ -19,21 +19,28 @@ class NewUserPage extends StatefulWidget {
 }
 
 class _NewUserPageState extends State<NewUserPage> {
+  // Controllers dos campos de texto
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  // Classe que retorna uma lista de câmeras
   GetCameraList getCameraList = GetCameraList();
-  UserCredential? result;
+  // Variável de credencial (iniciam nulas)
   User? user;
+  UserCredential? result;
+  // booleano para controlar a obscureText do campo de senha
   bool _showPassword = true;
 
   @override
   void initState() {
     super.initState();
+    // inicia a função para obter
+    // a lista de câmeras do dispositivo
     getCameraList.getCameraList();
   }
 
+  // Destrói o processo do controller
   @override
   void dispose() {
     _nameController.dispose();
@@ -44,103 +51,100 @@ class _NewUserPageState extends State<NewUserPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: signUp(),
-      builder: (context, snapshot) => Scaffold(
-        backgroundColor: const Color.fromARGB(255, 1, 14, 31),
-        body: ListView(
-          children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 80),
-                  const FittedBox(
-                    fit: BoxFit.contain,
-                    child: Text(
-                      'Criar Conta',
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'PaytoneOne',
-                          //fontWeight: FontWeight.bold,
-                          fontSize: 30),
-                    ),
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 1, 14, 31),
+      body: ListView(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 80),
+                const FittedBox(
+                  fit: BoxFit.contain,
+                  child: Text(
+                    'Criar Conta',
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: 'PaytoneOne',
+                        //fontWeight: FontWeight.bold,
+                        fontSize: 30),
                   ),
-                  const SizedBox(height: 60),
-                  CustomTextField(
-                    expanded: false,
-                    keyboardType: TextInputType.name,
-                    useController: true,
-                    enabled: true,
-                    controller: _nameController,
-                    hintText: 'Nome',
-                  ),
-                  CustomTextField(
-                    expanded: false,
-                    keyboardType: TextInputType.emailAddress,
-                    useController: true,
-                    enabled: true,
-                    controller: _emailController,
-                    hintText: "Email",
-                  ),
-                  PasswordField(
-                    passwordController: _passwordController,
-                    showPassword: _showPassword,
+                ),
+                const SizedBox(height: 60),
+                CustomTextField(
+                  expanded: false,
+                  keyboardType: TextInputType.name,
+                  useController: true,
+                  enabled: true,
+                  controller: _nameController,
+                  hintText: 'Nome',
+                ),
+                CustomTextField(
+                  expanded: false,
+                  keyboardType: TextInputType.emailAddress,
+                  useController: true,
+                  enabled: true,
+                  controller: _emailController,
+                  hintText: "Email",
+                ),
+                PasswordField(
+                  passwordController: _passwordController,
+                  showPassword: _showPassword,
+                  onTap: () {
+                    setState(() {
+                      showPassword();
+                    });
+                  },
+                ),
+                ConfirmPasswordField(controller: _confirmPasswordController),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 100),
+                  child: GestureDetector(
                     onTap: () {
-                      setState(() {
-                        showPassword();
-                      });
-                    },
-                  ),
-                  ConfirmPasswordField(controller: _confirmPasswordController),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 100),
-                    child: GestureDetector(
-                      onTap: () {
-                        if (_passwordController.text.length < 6) {
-                          showDialog(
+                      if (_passwordController.text.length < 6) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AlertDialog(
+                              title: Text('Ops...'),
+                              content: Text(
+                                'Sua senha deve conter no mínimo 6 caracteres.',
+                              ),
+                            );
+                          },
+                        );
+                      } else if (_nameController.text.isNotEmpty &&
+                          _passwordController.text.isNotEmpty &&
+                          _confirmPasswordController.text.isNotEmpty) {
+                        showDialog(
                             context: context,
                             builder: (context) {
-                              return const AlertDialog(
-                                title: Text('Ops...'),
-                                content: Text(
-                                  'Sua senha deve conter no mínimo 6 caracteres.',
-                                ),
-                              );
-                            },
-                          );
-                        } else if (_nameController.text.isNotEmpty &&
-                            _passwordController.text.isNotEmpty &&
-                            _confirmPasswordController.text.isNotEmpty) {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const LoadingWindow();
-                              });
-                          signUp().whenComplete(() {
-                            createUserDB();
-                          }).whenComplete(() => {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => TakePictureScreen(
-                                          camera: getCameraList.firstCamera,
-                                          user: user!,
-                                          result: result!,
-                                        )))
-                              });
-                        } else {
-                          showAlertDialog(context);
-                        }
-                      },
-                      child: const Cadastrar(title: 'Cadastrar'),
-                    ),
+                              return const LoadingWindow();
+                            });
+                        signUp().whenComplete(() {
+                          createUserDB();
+                        }).whenComplete(() => {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => TakePictureScreen(
+                                        camera: getCameraList.firstCamera,
+                                        user: user!,
+                                        result: result!,
+                                      )))
+                            });
+                      } else {
+                        showAlertDialog(context);
+                      }
+                    },
+                    child: const Cadastrar(title: 'Cadastrar'),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

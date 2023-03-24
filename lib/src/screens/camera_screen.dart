@@ -60,60 +60,70 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Faça uma Selfie'),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: const Color.fromARGB(255, 1, 14, 31),
-      ),
-      body: Column(
-        children: [
-          /*
-           * Constrói a tela com um CameraPreview
-           * que tem future um dos controllers.
-          */
-          Expanded(
-            child: FutureBuilder<void>(
-              future: _initializeControllerFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return CameraPreview(_controller);
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              },
+    /*
+     * O usuário só consegue sair dessa tela se
+     * Encerrar o app.
+     * É obrigatório que o mesmo faça a selfie.
+    */
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Faça uma Selfie'),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color.fromARGB(255, 1, 14, 31),
+        ),
+        body: Column(
+          children: [
+            /*
+             * Constrói a tela com um CameraPreview
+             * que tem future um dos controllers.
+            */
+            Expanded(
+              child: FutureBuilder<void>(
+                future: _initializeControllerFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return CameraPreview(_controller);
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
 
-      // Botão para tirar a foto
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: SizedBox(
-          width: 70,
-          height: 70,
-          child: FittedBox(
-            child: FloatingActionButton(
-              backgroundColor: const Color.fromARGB(255, 1, 14, 31),
-              /*
-               * Roda o controller da câmera e tira uma foto
-               * que é então enviada para o firebase
-              */
-              onPressed: () async {
-                try {
-                  await _initializeControllerFuture;
-                  uploadImage();
-                } catch (e) {
-                  print(e);
-                }
-              },
-              child: const Icon(
-                Icons.camera_alt,
-                size: 30,
-                color: Color.fromARGB(255, 0, 233, 99),
+        // Botão para tirar a foto
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: SizedBox(
+            width: 70,
+            height: 70,
+            child: FittedBox(
+              child: FloatingActionButton(
+                backgroundColor: const Color.fromARGB(255, 1, 14, 31),
+                /*
+                 * Roda o controller da câmera e tira uma foto
+                 * que é então enviada para o firebase
+                */
+                onPressed: () async {
+                  try {
+                    await _initializeControllerFuture;
+                    uploadImage();
+                  } catch (e) {
+                    print(e);
+                  }
+                },
+                child: const Icon(
+                  Icons.camera_alt,
+                  size: 30,
+                  color: Color.fromARGB(255, 0, 233, 99),
+                ),
               ),
             ),
           ),
