@@ -1,6 +1,6 @@
-// ignore_for_file: avoid_print
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/core/camera/get_camera_list.dart';
+import 'package:desafio_capyba/core/globals/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:desafio_capyba/src/models/text_fields/confirm_password_field.dart';
@@ -11,7 +11,6 @@ import 'package:desafio_capyba/src/models/alert_dialogs/show_dialog.dart';
 import 'package:desafio_capyba/src/models/button/button.dart';
 import 'package:desafio_capyba/src/screens/camera_screen.dart';
 
-// lib/src/models/text_fields
 class NewUserPage extends StatefulWidget {
   const NewUserPage({super.key});
 
@@ -159,7 +158,11 @@ class _NewUserPageState extends State<NewUserPage> {
       );
       user = result!.user;
     } on FirebaseAuthException catch (e) {
-      print(e);
+      final SnackBar snackBar = SnackBar(
+        content: Text("Erro: $e"),
+        duration: const Duration(seconds: 3),
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
     }
   }
 

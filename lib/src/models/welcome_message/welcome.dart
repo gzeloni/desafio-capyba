@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// Imagem que aparece na tela principal e
+/// na tela de criação de conta.
 class Welcome extends StatelessWidget {
   const Welcome({
     super.key,

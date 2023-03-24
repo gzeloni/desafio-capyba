@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Carrega uma animação de loading ¯\_(ツ)_/¯
 class LoadingWindow extends StatelessWidget {
   const LoadingWindow({super.key});
 

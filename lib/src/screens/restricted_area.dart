@@ -6,6 +6,8 @@ import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
 import 'package:desafio_capyba/src/models/post_card/post_card.dart';
 import 'package:flutter/material.dart';
 
+/// É um clone da tela HomePage mas que só gera itens
+/// na tela se isVerified == true
 class RestrictArea extends StatefulWidget {
   const RestrictArea({super.key});
 

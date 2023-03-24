@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Card usado para os conteúdos provenientes
+/// das collections do firebase.
+/// Pode ser reutilizado em qualquer tela.
+/// Gostei desse.
 class PostCard extends StatefulWidget {
   const PostCard(
       {super.key, required this.titulo, required this.conteudo, this.imagem});

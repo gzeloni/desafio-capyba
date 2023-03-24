@@ -1,17 +1,11 @@
-// ignore_for_file: avoid_print
-
 import 'dart:io';
-
-// package do Flutter
+import 'package:desafio_capyba/core/globals/globals.dart';
 import 'package:desafio_capyba/src/models/loading_windows/camera_loading_window.dart';
 import 'package:flutter/material.dart';
-// Dependências do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-// Dependência da câmera
 import 'package:camera/camera.dart';
-// Tela home e animação de carregamento
 import 'package:desafio_capyba/src/navbar/navbar.dart';
 
 class TakePictureScreen extends StatefulWidget {
@@ -21,10 +15,8 @@ class TakePictureScreen extends StatefulWidget {
     required this.user,
   });
 
-  /*
-   * Essas variáveis são preenchidas com informações
-   * da tela anterior (NewUserPage).
-  */
+  /// Essas variáveis são preenchidas com informações
+  /// da tela anterior (NewUserPage).
   final CameraDescription camera;
   final User user;
 
@@ -59,11 +51,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /*
-     * O usuário só consegue sair dessa tela se
-     * Encerrar o app.
-     * É obrigatório que o mesmo faça a selfie.
-    */
+    /// O usuário só consegue sair dessa tela se
+    /// Encerrar o app.
+    /// É obrigatório que o mesmo faça a selfie.
     return WillPopScope(
       onWillPop: () async {
         return false;
@@ -77,10 +67,8 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         ),
         body: Column(
           children: [
-            /*
-             * Constrói a tela com um CameraPreview
-             * que tem future um dos controllers.
-            */
+            /// Constrói a tela com um CameraPreview
+            /// que tem future um dos controllers.
             Expanded(
               child: FutureBuilder<void>(
                 future: _initializeControllerFuture,
@@ -106,16 +94,19 @@ class TakePictureScreenState extends State<TakePictureScreen> {
             child: FittedBox(
               child: FloatingActionButton(
                 backgroundColor: const Color.fromARGB(255, 1, 14, 31),
-                /*
-                 * Roda o controller da câmera e tira uma foto
-                 * que é então enviada para o firebase
-                */
+
+                /// Roda o controller da câmera e tira uma foto
+                /// que é então enviada para o firebase
                 onPressed: () async {
                   try {
                     await _initializeControllerFuture;
                     uploadImage();
                   } catch (e) {
-                    print(e);
+                    final SnackBar snackBar = SnackBar(
+                      content: Text("Erro: $e"),
+                      duration: const Duration(seconds: 3),
+                    );
+                    snackbarKey.currentState?.showSnackBar(snackBar);
                   }
                 },
                 child: const Icon(
@@ -131,13 +122,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     );
   }
 
-  /* 
-   * Método uploadImage abre uma câmera frontal customizada.
-   * Sendo possível apenas tirar a foto pela câmera frontal.
-   * Que é então salva na path do dispositivo.
-   * E depois é executado o upload para o Firebase Storage.
-   * Que devolve o link da foto para a variável userProfilePhoto.
-  */
+  /// Método uploadImage abre uma câmera frontal customizada.
+  /// Sendo possível apenas tirar a foto pela câmera frontal.
+  /// Que é então salva na path do dispositivo.
+  /// E depois é executado o upload para o Firebase Storage.
+  /// Que devolve o link da foto para a variável userProfilePhoto.
   void uploadImage() async {
     try {
       showDialog(
@@ -177,8 +166,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       });
       // Se houver falha no upload:
     } catch (e) {
-      // TODO mostra um scaffoldMessenger para o usuário no rodapé da página.
-      print("Erro em upload: $e");
+      final SnackBar snackBar = SnackBar(
+        content: Text("Erro: $e"),
+        duration: const Duration(seconds: 3),
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

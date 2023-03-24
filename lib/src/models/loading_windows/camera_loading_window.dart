@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Carrega uma animação de loading ¯\_(ツ)_/¯
 class CameraLoading extends StatelessWidget {
   const CameraLoading({super.key});
 

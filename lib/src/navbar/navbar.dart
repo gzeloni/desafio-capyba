@@ -2,6 +2,8 @@ import 'package:desafio_capyba/src/screens/home.dart';
 import 'package:desafio_capyba/src/screens/restricted_area.dart';
 import 'package:flutter/material.dart';
 
+/// A NavBar compõe a tela e faz a navegação pelas telas
+/// HomePage e RestrictArea.
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
 

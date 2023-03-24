@@ -19,10 +19,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+      /// Constrói a tela com informações
+      /// obtidas pelo getUserInfo()
       future: userInfo.getUserInfo(),
       builder: (context, snapshot) => StreamBuilder(
         stream: FirebaseFirestore.instance.collection('home').snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) =>
+
+            /// WillPopScope torna impossível sair
+            /// do aplicativo por meio dos botões de voltar
             WillPopScope(
           onWillPop: () async {
             return false;
@@ -38,6 +43,8 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: GestureDetector(
                     onTap: () {
+                      /// Mostra o diálogo de confirmação
+                      /// do logout
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -64,6 +71,9 @@ class _HomePageState extends State<HomePage> {
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            /// As informções de getUserInfo são usadas
+                            /// nos cards abaixo.
+                            /// Gerando um card para cada doc na collection 'home'
                             PostCard(
                               titulo: doc['titulo'].toString(),
                               conteudo: doc['conteudo'].toString(),
