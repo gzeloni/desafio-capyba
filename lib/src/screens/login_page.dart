@@ -1,8 +1,9 @@
 import 'package:desafio_capyba/src/functions/sign_in.dart';
+import 'package:desafio_capyba/src/models/alert_dialog.dart';
+import 'package:desafio_capyba/src/models/button.dart';
+import 'package:desafio_capyba/src/models/custom_text_field.dart';
 import 'package:desafio_capyba/src/models/welcome.dart';
-import 'package:desafio_capyba/src/screens/home.dart';
 import 'package:desafio_capyba/src/screens/new_user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -53,33 +54,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 50),
                 //Email TextField
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 1, 14, 31),
-                      border: Border.all(
-                        color: Colors.white,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: TextField(
-                        keyboardType: TextInputType.emailAddress,
-                        controller: _emailController,
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Email',
-                          hintStyle: TextStyle(
-                            fontFamily: 'Poppins',
-                            color: Colors.white,
-                            fontSize: 17,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                CustomTextField(
+                  enabled: true,
+                  useController: true,
+                  controller: _emailController,
+                  hintText: 'Email',
                 ),
                 const SizedBox(
                   height: 30,
@@ -102,7 +81,9 @@ class _LoginPageState extends State<LoginPage> {
                         decoration: InputDecoration(
                           suffixIcon: GestureDetector(
                             onTap: () {
-                              showPassword();
+                              setState(() {
+                                showPassword();
+                              });
                             },
                             child: Icon(
                               _showPassword == true
@@ -168,55 +149,15 @@ class _LoginPageState extends State<LoginPage> {
                           password: _passwordController.text.trim(),
                         ).signIn();
                       } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              backgroundColor:
-                                  Color.fromARGB(255, 215, 254, 215),
-                              title: Text(
-                                "Algo deu errado!",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 1, 14, 31),
-                                ),
-                              ),
-                              content: Text(
-                                "Tenha certeza de que preencheu os campos corretamente.",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color.fromARGB(255, 1, 14, 31),
-                                ),
-                              ),
-                            );
-                          },
+                        const CustomAlertDialog(
+                          title: "Algo deu errado!",
+                          content:
+                              "Tenha certeza de que preencheu os campos corretamente.",
                         );
                       }
                     },
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 0, 233, 99),
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 1, 14, 31)),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'Entrar',
-                          style: TextStyle(
-                              color: Color.fromARGB(255, 1, 14, 31),
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20),
-                        ),
-                      ),
+                    child: const Cadastrar(
+                      title: 'Entrar',
                     ),
                   ),
                 ),
@@ -227,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => NewUserPage(),
+                        builder: (context) => const NewUserPage(),
                       ),
                     );
                   },
