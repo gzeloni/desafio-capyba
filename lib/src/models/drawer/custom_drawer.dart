@@ -36,7 +36,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     getCameraList.getCameraList();
-    timer = Timer.periodic(const Duration(minutes: 5),
+    timer = Timer.periodic(const Duration(seconds: 2),
         (_) => checkEmailVerify.checkEmailVerified());
     super.initState();
   }
