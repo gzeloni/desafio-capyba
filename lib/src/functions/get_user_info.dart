@@ -6,19 +6,21 @@ class GetUserInfo {
   String userEmail = '';
   String userName = '';
   String userProfilePhoto = '';
-  String userStatus = '';
+  bool isVerified = false;
 
   Future getUserInfo() async {
     try {
       final docRef =
-          FirebaseFirestore.instance.collection("users").doc(user.uid);
+          FirebaseFirestore.instance.collection('users').doc(user.uid);
       final doc = await docRef.get();
       final data = doc.data() as Map<String, dynamic>;
 
       userName = data['name'];
       userEmail = data['email'];
       userProfilePhoto = data['profilePhoto'];
+      isVerified = data['isVerified'];
     } catch (e) {
+      // TODO mostra um scaffoldMessenger para o usuário no rodapé da página.
       print(e);
     }
   }
