@@ -1,4 +1,5 @@
 import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
+import 'package:desafio_capyba/src/navbar/navbar.dart';
 import 'package:desafio_capyba/src/screens/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class SignIn {
           .then((value) {
         Navigator.of(context).pop();
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const HomePage()),
+            MaterialPageRoute(builder: (context) => const NavBar()),
             (route) => false);
       });
     } on FirebaseAuthException catch (e) {

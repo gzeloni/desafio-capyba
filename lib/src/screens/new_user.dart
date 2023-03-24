@@ -132,7 +132,6 @@ class _NewUserPageState extends State<NewUserPage> {
                                   builder: (context) => TakePictureScreen(
                                         camera: getCameraList.firstCamera,
                                         user: user!,
-                                        result: result!,
                                       )))
                             });
                       } else {

@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desafio_capyba/core/camera/get_camera_list.dart';
 import 'package:desafio_capyba/src/functions/get_user_info.dart';
 import 'package:desafio_capyba/src/models/custom_list_tile/custom_list_tile.dart';
+import 'package:desafio_capyba/src/screens/camera_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +21,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
   bool isEmailVerified = false;
   Timer? timer;
   GetUserInfo userInfo = GetUserInfo();
+  // Classe que retorna uma lista de câmeras
+  GetCameraList getCameraList = GetCameraList();
+  // Variável de credencial (iniciam nulas)
 
   @override
   void initState() {
+    getCameraList.getCameraList();
     super.initState();
   }
 
@@ -43,15 +49,28 @@ class _CustomDrawerState extends State<CustomDrawer> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                Container(
-                  width: 200,
-                  height: 375,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(userInfo.userProfilePhoto != ''
-                          ? userInfo.userProfilePhoto
-                          : 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'),
-                      fit: BoxFit.cover,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => TakePictureScreen(
+                              camera: getCameraList.firstCamera,
+                              user: userInfo.user,
+                            )));
+                  },
+                  child: Container(
+                    width: 200,
+                    height: 375,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(userInfo.userProfilePhoto != ''
+                            ? userInfo.userProfilePhoto
+                            : 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.edit,
+                      size: 45,
                     ),
                   ),
                 ),

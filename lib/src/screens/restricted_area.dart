@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/src/functions/get_user_info.dart';
+import 'package:desafio_capyba/src/models/alert_dialogs/sign_out_alert.dart';
 import 'package:desafio_capyba/src/models/drawer/custom_drawer.dart';
 import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
 import 'package:desafio_capyba/src/models/post_card/post_card.dart';
@@ -36,7 +37,14 @@ class _RestrictAreaState extends State<RestrictArea> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const ConfirmSignOutAlert();
+                        },
+                      );
+                    },
                     child: const Icon(
                       Icons.exit_to_app,
                       size: 26,

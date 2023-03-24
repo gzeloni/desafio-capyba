@@ -3,7 +3,6 @@
 import 'dart:io';
 
 // package do Flutter
-import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
 import 'package:flutter/material.dart';
 // Dependências do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,14 +10,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // Dependência da câmera
 import 'package:camera/camera.dart';
-// Tela Home
-import 'package:desafio_capyba/src/screens/home.dart';
+// Tela home e animação de carregamento
+import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
+import 'package:desafio_capyba/src/navbar/navbar.dart';
 
 class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({
     super.key,
     required this.camera,
-    required this.result,
     required this.user,
   });
 
@@ -27,7 +26,6 @@ class TakePictureScreen extends StatefulWidget {
    * da tela anterior (NewUserPage).
   */
   final CameraDescription camera;
-  final UserCredential result;
   final User user;
 
   @override
@@ -172,7 +170,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         // Navega para a Home Page destruindo a rota anterior.
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => const HomePage(),
+            builder: (context) => const NavBar(),
           ),
           ModalRoute.withName('/'),
         );
