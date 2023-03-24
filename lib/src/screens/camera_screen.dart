@@ -3,6 +3,7 @@
 import 'dart:io';
 
 // package do Flutter
+import 'package:desafio_capyba/src/models/loading_windows/camera_loading_window.dart';
 import 'package:flutter/material.dart';
 // Dependências do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +12,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 // Dependência da câmera
 import 'package:camera/camera.dart';
 // Tela home e animação de carregamento
-import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
 import 'package:desafio_capyba/src/navbar/navbar.dart';
 
 class TakePictureScreen extends StatefulWidget {
@@ -143,7 +143,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return const LoadingWindow();
+          return const CameraLoading();
         },
       );
       // Roda o módulo de câmera por uma função assíncrona
