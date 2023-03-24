@@ -59,9 +59,6 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _emailController,
                   hintText: 'Email',
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Container(
