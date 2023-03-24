@@ -24,9 +24,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   bool isEmailVerified = false;
-  Timer? timer;
   GetUserInfo userInfo = GetUserInfo();
-  CheckEmailVerify checkEmailVerify = CheckEmailVerify();
   // Classe que retorna uma lista de câmeras
   GetCameraList getCameraList = GetCameraList();
   // Variável de credencial (iniciam nulas)
@@ -36,8 +34,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     getCameraList.getCameraList();
-    timer = Timer.periodic(const Duration(seconds: 2),
-        (_) => checkEmailVerify.checkEmailVerified());
     super.initState();
   }
 
@@ -46,7 +42,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   /// são encerrados.
   @override
   void dispose() {
-    timer?.cancel();
     super.dispose();
   }
 

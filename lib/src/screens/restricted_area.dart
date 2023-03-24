@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desafio_capyba/src/functions/check_email.dart';
 import 'package:desafio_capyba/src/functions/get_user_info.dart';
 import 'package:desafio_capyba/src/models/alert_dialogs/sign_out_alert.dart';
 import 'package:desafio_capyba/src/models/drawer/custom_drawer.dart';
@@ -18,7 +21,28 @@ class RestrictArea extends StatefulWidget {
 
 class _RestrictAreaState extends State<RestrictArea> {
   GetUserInfo userInfo = GetUserInfo();
-  Duration duration = const Duration(seconds: 3);
+  CheckEmailVerify checkEmailVerify = CheckEmailVerify();
+  Duration duration = const Duration(seconds: 10);
+  Timer? timer;
+
+  /// Toda vez que o drawer é clicado no
+  /// aplicativo, o app consulta as câmeras do smartphone.
+  @override
+  void initState() {
+    timer =
+        Timer.periodic(duration, (_) => checkEmailVerify.checkEmailVerified());
+    super.initState();
+  }
+
+  /// Toda vez que o drawer é fechado, a lista
+  /// de câmeras é fechada e o timer (explicado mais abaixo)
+  /// são encerrados.
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
