@@ -32,6 +32,18 @@ class _RestrictAreaState extends State<RestrictArea> {
               title: const Text('Restrito'),
               centerTitle: true,
               backgroundColor: const Color.fromARGB(255, 1, 14, 31),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: const Icon(
+                      Icons.exit_to_app,
+                      size: 26,
+                    ),
+                  ),
+                ),
+              ],
             ),
             body: SafeArea(
               child: !snapshot.hasData
