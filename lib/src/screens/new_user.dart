@@ -173,7 +173,7 @@ class _NewUserPageState extends State<NewUserPage> {
 
   void showPassword() {
     setState(() {
-      _showPassword == false ? _showPassword = true : _showPassword = false;
+      _showPassword == !_showPassword;
     });
   }
 }

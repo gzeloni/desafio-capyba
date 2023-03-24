@@ -11,7 +11,7 @@ class PasswordField extends StatefulWidget {
 
   final TextEditingController passwordController;
   final bool showPassword;
-  final Function onTap;
+  final void Function()? onTap;
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();
