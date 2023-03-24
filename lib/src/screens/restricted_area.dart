@@ -73,14 +73,15 @@ class _RestrictAreaState extends State<RestrictArea> {
                                 conteudo: doc['conteudo'].toString(),
                                 imagem: doc['imagem'].toString(),
                               ),
-                            const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Welcome(
-                                    title:
-                                        'É necessário verificar o seu email.'),
+                            if (userInfo.isVerified == false)
+                              const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Welcome(
+                                      title:
+                                          'É necessário verificar o seu email.'),
+                                ),
                               ),
-                            ),
                           ],
                         );
                       },

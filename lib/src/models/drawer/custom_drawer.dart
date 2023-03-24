@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/core/camera/get_camera_list.dart';
+import 'package:desafio_capyba/src/functions/check_email.dart';
 import 'package:desafio_capyba/src/functions/get_user_info.dart';
 import 'package:desafio_capyba/src/models/custom_list_tile/custom_list_tile.dart';
 import 'package:desafio_capyba/src/screens/camera_screen.dart';
@@ -25,6 +26,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   bool isEmailVerified = false;
   Timer? timer;
   GetUserInfo userInfo = GetUserInfo();
+  CheckEmailVerify checkEmailVerify = CheckEmailVerify();
   // Classe que retorna uma lista de câmeras
   GetCameraList getCameraList = GetCameraList();
   // Variável de credencial (iniciam nulas)
@@ -34,6 +36,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
   @override
   void initState() {
     getCameraList.getCameraList();
+    timer = Timer.periodic(const Duration(minutes: 5),
+        (_) => checkEmailVerify.checkEmailVerified());
     super.initState();
   }
 
@@ -131,7 +135,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   onPressed: () {
                     setState(() {
-                      checkEmailVerified();
+                      verifyEmail();
                       Navigator.pop(context);
                     });
                   },
@@ -154,49 +158,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     });
   }
 
-  /// Ao ser chamado, recarrega as informações do
-  /// currentUser (usuário atual) e
-  /// SE estiver montado, atualiza com o setState
-  /// o booleano isEmailVerified
-  checkEmailVerified() async {
-    await FirebaseAuth.instance.currentUser?.reload();
-
-    if (mounted) {
-      setState(() {
-        isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-      });
-    }
-
-    /// SE isEmailVerified for true
-    if (isEmailVerified) {
-      /// atualiza o booleano no doc do usuário
-      /// dando autorização para ver a tela RestrictedArea
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userInfo.user.uid)
-          .update({
-        'isVerified': true,
-      });
-
-      /// Coloca um aviso no rodapé do app avisando que foi verificado.
-      if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Email Verificado!")));
-      }
-
-      /// Para o timer
-      timer?.cancel();
-    } else {
-      /// SE isEmailVerified ainda estiver false
-      /// continua rodando o checkEmailVerified()
-      /// a cada 3 segundos
-      verifyEmail();
-    }
-  }
-
   Future verifyEmail() async {
-    timer =
-        Timer.periodic(const Duration(seconds: 3), (_) => checkEmailVerified());
     await FirebaseAuth.instance.currentUser?.sendEmailVerification();
   }
 }
