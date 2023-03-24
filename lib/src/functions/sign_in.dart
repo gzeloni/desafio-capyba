@@ -1,9 +1,9 @@
 // package do Flutter
-import 'package:desafio_capyba/src/models/alert_dialogs/custom_snack_bar.dart';
+import 'package:desafio_capyba/core/globals/globals.dart';
 import 'package:flutter/material.dart';
 // Dependência do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
-// NavBar e LoadingWindow
+// NavBar LoadingWindow
 import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
 import 'package:desafio_capyba/src/navbar/navbar.dart';
 
@@ -41,9 +41,11 @@ class SignIn {
       });
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
-      CustomScaffoldMessenger(
-        error: e.toString(),
+      final SnackBar snackBar = SnackBar(
+        content: Text("Erro: $e"),
+        duration: const Duration(seconds: 3),
       );
+      snackbarKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

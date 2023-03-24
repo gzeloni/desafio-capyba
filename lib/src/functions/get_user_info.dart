@@ -1,7 +1,7 @@
-// Dependências do Firebase
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:desafio_capyba/src/models/alert_dialogs/custom_snack_bar.dart';
+import 'package:desafio_capyba/core/globals/globals.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class GetUserInfo {
   // Variáveis locais
@@ -42,9 +42,11 @@ class GetUserInfo {
 
     /// catch capta erros e retorna em um CustomSnackBar no rodapé da tela.
     catch (e) {
-      CustomScaffoldMessenger(
-        error: e.toString(),
+      final SnackBar snackBar = SnackBar(
+        content: Text("Erro: $e"),
+        duration: const Duration(seconds: 3),
       );
+      snackbarKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

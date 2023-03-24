@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Mesma coisa do alert_dialog, mas um pouco mais completo.
+/// Usado apenas na tela NewUser.
+/// Será refatorado em breve.
+
 void showAlertDialog(BuildContext context) {
   showDialog(
     context: context,

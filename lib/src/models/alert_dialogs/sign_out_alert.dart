@@ -3,6 +3,11 @@ import 'package:desafio_capyba/src/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+/// Esse alerta pergunta se o usuário deseja mesmo sair
+/// da aplicação e se sim, roda a função de logout
+/// do Firebase Auth.
+/// se não, roda um Navigator.pop() e continua a
+/// execução.
 class ConfirmSignOutAlert extends StatefulWidget {
   const ConfirmSignOutAlert({
     super.key,
@@ -39,12 +44,17 @@ class _ConfirmSignOutAlertState extends State<ConfirmSignOutAlert> {
           ),
           actions: [
             TextButton(
+              // Com essa função o usuário não faz logout
               onPressed: () {
                 Navigator.of(context).pop();
               },
               child: const Text('Cancelar'),
             ),
             TextButton(
+              /// Essa função roda uma tela de loading e em seguida faz o
+              /// logout por meio do FirebaseAuth.instance.signOut().
+              /// Somente após o signout ocorrer é que o Navigator é
+              /// acionado.
               onPressed: () {
                 showDialog(
                   context: context,

@@ -1,5 +1,6 @@
 import 'dart:async';
 // package do Flutter
+import 'package:desafio_capyba/core/globals/globals.dart';
 import 'package:flutter/material.dart';
 // Dependências do Firebase
 import 'package:firebase_core/firebase_core.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
     MaterialApp(
       theme: ThemeData.dark(),
       home: const CheckLogin(),
+      scaffoldMessengerKey: snackbarKey,
       debugShowCheckedModeBanner: false,
     ),
   );

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/core/camera/get_camera_list.dart';
 import 'package:desafio_capyba/src/functions/get_user_info.dart';
@@ -8,6 +7,11 @@ import 'package:desafio_capyba/src/screens/camera_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+/// CustomDrawer é utilizado nas telas:
+/// HomePage e RestrictPage.
+/// Alterar em uma tela altera em outra e
+/// nenhum parâmetro é externo, ou seja,
+/// CUIDADO COM O QUE EDITA AQUI
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
 
@@ -25,12 +29,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
   GetCameraList getCameraList = GetCameraList();
   // Variável de credencial (iniciam nulas)
 
+  /// Toda vez que o drawer é clicado no
+  /// aplicativo, o app consulta as câmeras do smartphone.
   @override
   void initState() {
     getCameraList.getCameraList();
     super.initState();
   }
 
+  /// Toda vez que o drawer é fechado, a lista
+  /// de câmeras é fechada e o timer (explicado mais abaixo)
+  /// são encerrados.
   @override
   void dispose() {
     timer?.cancel();
@@ -49,6 +58,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
+                /// Tocar na foto abre a câmera, sendo possível
+                /// cancelar a operação sem receber erros.
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -62,6 +73,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     height: 375,
                     decoration: BoxDecoration(
                       image: DecorationImage(
+                        /// AVISO DE GAMBIARRA
+                        /// Esse widget tem duas opções de tela pois
+                        /// ao abrir o drawer, o builder fica nulo
+                        /// por uns milissegundos.
+                        /// Nada perceptível ao usuário, mas sem essa função vai quebrar.
                         image: NetworkImage(userInfo.userProfilePhoto != ''
                             ? userInfo.userProfilePhoto
                             : 'https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg'),

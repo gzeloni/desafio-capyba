@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// CustomListTile é a forma econômica que
+/// arranjei para colocar itens no drawer lateral.
+/// Nenhum de seus parâmetros é obrigatório.
 class CustomListTile extends StatefulWidget {
   const CustomListTile(
       {super.key, required this.title, required this.onTap, this.controller});

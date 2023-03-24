@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Alerta modularizado e usado em várias telas.
+/// Pede titulo e conteúdo e retorna um AlertDialog
+/// com as informações.
 class CustomAlertDialog extends StatefulWidget {
   const CustomAlertDialog({
     super.key,

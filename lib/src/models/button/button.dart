@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// É um botão de login :)
+/// Só não o queria na tela principal, estava feio.
+/// Ele recebe o título por parâmetro.
 class Cadastrar extends StatefulWidget {
   const Cadastrar({super.key, required this.title});
 
