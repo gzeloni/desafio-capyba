@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/core/camera/get_camera_list.dart';
 import 'package:desafio_capyba/core/globals/globals.dart';
+import 'package:desafio_capyba/src/models/welcome_message/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:desafio_capyba/src/models/text_fields/confirm_password_field.dart';
@@ -53,97 +54,90 @@ class _NewUserPageState extends State<NewUserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 1, 14, 31),
-      body: ListView(
-        children: [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 80),
-                const FittedBox(
-                  fit: BoxFit.contain,
-                  child: Text(
-                    'Criar Conta',
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'PaytoneOne',
-                        //fontWeight: FontWeight.bold,
-                        fontSize: 30),
+      body: SafeArea(
+        child: ListView(
+          children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 60),
+                  const Welcome(
+                    title: 'Criar Conta',
                   ),
-                ),
-                const SizedBox(height: 60),
-                CustomTextField(
-                  expanded: false,
-                  keyboardType: TextInputType.name,
-                  useController: true,
-                  enabled: true,
-                  controller: _nameController,
-                  hintText: 'Nome',
-                ),
-                CustomTextField(
-                  expanded: false,
-                  keyboardType: TextInputType.emailAddress,
-                  useController: true,
-                  enabled: true,
-                  controller: _emailController,
-                  hintText: "Email",
-                ),
-                PasswordField(
-                  passwordController: _passwordController,
-                  showPassword: _showPassword,
-                  onTap: () {
-                    setState(() {
-                      showPassword();
-                    });
-                  },
-                ),
-                ConfirmPasswordField(controller: _confirmPasswordController),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 100),
-                  child: GestureDetector(
+                  const SizedBox(height: 60),
+                  CustomTextField(
+                    expanded: false,
+                    keyboardType: TextInputType.name,
+                    useController: true,
+                    enabled: true,
+                    controller: _nameController,
+                    hintText: 'Nome',
+                  ),
+                  CustomTextField(
+                    expanded: false,
+                    keyboardType: TextInputType.emailAddress,
+                    useController: true,
+                    enabled: true,
+                    controller: _emailController,
+                    hintText: "Email",
+                  ),
+                  PasswordField(
+                    passwordController: _passwordController,
+                    showPassword: _showPassword,
                     onTap: () {
-                      if (_passwordController.text.length < 6) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              title: Text('Ops...'),
-                              content: Text(
-                                'Sua senha deve conter no mínimo 6 caracteres.',
-                              ),
-                            );
-                          },
-                        );
-                      } else if (_nameController.text.isNotEmpty &&
-                          _passwordController.text.isNotEmpty &&
-                          _confirmPasswordController.text.isNotEmpty) {
-                        showDialog(
+                      setState(() {
+                        showPassword();
+                      });
+                    },
+                  ),
+                  ConfirmPasswordField(controller: _confirmPasswordController),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 100),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_passwordController.text.length < 6) {
+                          showDialog(
                             context: context,
                             builder: (context) {
-                              return const LoadingWindow();
-                            });
-                        signUp().whenComplete(() {
-                          createUserDB();
-                        }).whenComplete(() => {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => TakePictureScreen(
-                                        camera: getCameraList.firstCamera,
-                                        user: user!,
-                                      )))
-                            });
-                      } else {
-                        showAlertDialog(context);
-                      }
-                    },
-                    child: const Cadastrar(title: 'Cadastrar'),
+                              return const AlertDialog(
+                                title: Text('Ops...'),
+                                content: Text(
+                                  'Sua senha deve conter no mínimo 6 caracteres.',
+                                ),
+                              );
+                            },
+                          );
+                        } else if (_nameController.text.isNotEmpty &&
+                            _passwordController.text.isNotEmpty &&
+                            _confirmPasswordController.text.isNotEmpty) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const LoadingWindow();
+                              });
+                          signUp().whenComplete(() {
+                            createUserDB();
+                          }).whenComplete(() => {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => TakePictureScreen(
+                                          camera: getCameraList.firstCamera,
+                                          user: user!,
+                                        )))
+                              });
+                        } else {
+                          showAlertDialog(context);
+                        }
+                      },
+                      child: const Cadastrar(title: 'Cadastrar'),
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 60),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -173,6 +167,7 @@ class _NewUserPageState extends State<NewUserPage> {
     await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
       'name': _nameController.text.trim(),
       'email': _emailController.text.trim(),
+      'isVerified': false,
     });
   }
 
