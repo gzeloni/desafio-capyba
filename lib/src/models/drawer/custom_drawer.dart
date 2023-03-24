@@ -90,6 +90,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                   ),
                 ),
+
+                /// O CustomListTile espera por um
+                /// título e uma função void.
+                /// Dentro da função void é chamado um
+                /// setState(() {}); que atualiza o nome ao
+                /// mesmo tempo que roda a função updateUserDB
+                /// que espera por uma String e um controller.
                 CustomListTile(
                     title: userInfo.userName,
                     onTap: () {
@@ -111,6 +118,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 const SizedBox(
                   height: 40,
                 ),
+
+                /// (Esse botão inicia o timer que comentei lá no começo)
+                /// Ao clicar nele, é chamada a função checkEmailVerified()
+                /// que a cada 3 segundos verifica se o email foi verificado
+                /// ou não.
                 TextButton(
                   child: const Text(
                     'Verificar Email',
@@ -132,6 +144,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
+  /// Usa os parâmetros solicitados para atualizar um item do Firebase Firestore
   Future updateUserDB(String field, TextEditingController controller) async {
     await FirebaseFirestore.instance
         .collection('users')
@@ -141,6 +154,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
     });
   }
 
+  /// Ao ser chamado, recarrega as informações do
+  /// currentUser (usuário atual) e
+  /// SE estiver montado, atualiza com o setState
+  /// o booleano isEmailVerified
   checkEmailVerified() async {
     await FirebaseAuth.instance.currentUser?.reload();
 
@@ -149,19 +166,30 @@ class _CustomDrawerState extends State<CustomDrawer> {
         isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
       });
     }
+
+    /// SE isEmailVerified for true
     if (isEmailVerified) {
+      /// atualiza o booleano no doc do usuário
+      /// dando autorização para ver a tela RestrictedArea
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userInfo.user.uid)
           .update({
         'isVerified': true,
       });
+
+      /// Coloca um aviso no rodapé do app avisando que foi verificado.
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text("Email Verificado!")));
       }
+
+      /// Para o timer
       timer?.cancel();
     } else {
+      /// SE isEmailVerified ainda estiver false
+      /// continua rodando o checkEmailVerified()
+      /// a cada 3 segundos
       verifyEmail();
     }
   }
