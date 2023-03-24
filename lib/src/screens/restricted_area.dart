@@ -4,6 +4,7 @@ import 'package:desafio_capyba/src/models/alert_dialogs/sign_out_alert.dart';
 import 'package:desafio_capyba/src/models/drawer/custom_drawer.dart';
 import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
 import 'package:desafio_capyba/src/models/post_card/post_card.dart';
+import 'package:desafio_capyba/src/models/welcome_message/welcome.dart';
 import 'package:flutter/material.dart';
 
 /// É um clone da tela HomePage mas que só gera itens
@@ -62,7 +63,6 @@ class _RestrictAreaState extends State<RestrictArea> {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         final DocumentSnapshot doc = snapshot.data!.docs[index];
-
                         return Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -73,6 +73,14 @@ class _RestrictAreaState extends State<RestrictArea> {
                                 conteudo: doc['conteudo'].toString(),
                                 imagem: doc['imagem'].toString(),
                               ),
+                            const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Welcome(
+                                    title:
+                                        'É necessário verificar o seu email.'),
+                              ),
+                            ),
                           ],
                         );
                       },

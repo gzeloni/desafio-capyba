@@ -25,7 +25,7 @@ class Welcome extends StatelessWidget {
           child: Text(
             title,
             textAlign: TextAlign.center,
-            maxLines: 1,
+            maxLines: 2,
             style: const TextStyle(
                 color: Colors.white, fontFamily: 'PaytoneOne', fontSize: 30),
           ),
