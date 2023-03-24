@@ -84,7 +84,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   onPressed: () {
                     setState(() {
-                      verifyEmail();
+                      checkEmailVerified();
                       Navigator.pop(context);
                     });
                   },
@@ -104,12 +104,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
         .update({
       field: controller.text.trim(),
     });
-  }
-
-  Future verifyEmail() async {
-    timer =
-        Timer.periodic(const Duration(seconds: 3), (_) => checkEmailVerified());
-    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
   }
 
   checkEmailVerified() async {
@@ -132,6 +126,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
             .showSnackBar(const SnackBar(content: Text("Email Verificado!")));
       }
       timer?.cancel();
+    } else {
+      verifyEmail();
     }
+  }
+
+  Future verifyEmail() async {
+    timer =
+        Timer.periodic(const Duration(seconds: 3), (_) => checkEmailVerified());
+    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
   }
 }
