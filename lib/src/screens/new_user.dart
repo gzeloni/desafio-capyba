@@ -26,7 +26,6 @@ class _NewUserPageState extends State<NewUserPage> {
   GetCameraList getCameraList = GetCameraList();
   UserCredential? result;
   User? user;
-  String userProfilePhoto = '';
   bool _showPassword = true;
 
   @override
