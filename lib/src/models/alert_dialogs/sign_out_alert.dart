@@ -1,3 +1,4 @@
+import 'package:desafio_capyba/core/globals/global_key.dart';
 import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -61,9 +62,17 @@ class _ConfirmSignOutAlertState extends State<ConfirmSignOutAlert> {
                     return const LoadingWindow();
                   },
                 );
-                FirebaseAuth.instance.signOut().then((value) =>
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/login', (route) => false));
+                try {
+                  FirebaseAuth.instance.signOut().then((value) =>
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, '/login', (route) => false));
+                } catch (e) {
+                  const SnackBar snackBar = SnackBar(
+                    content: Text("Encontramos um erro :("),
+                    duration: Duration(seconds: 3),
+                  );
+                  snackbarKey.currentState?.showSnackBar(snackBar);
+                }
               },
               child: const Text('Sair'),
             ),

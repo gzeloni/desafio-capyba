@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/core/camera/get_camera_list.dart';
+import 'package:desafio_capyba/core/globals/global_key.dart';
 import 'package:desafio_capyba/src/models/welcome_message/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -150,11 +151,12 @@ class _NewUserPageState extends State<NewUserPage> {
         password: _passwordController.text.trim(),
       );
       user = result!.user;
-    } on FirebaseAuthException catch (e) {
-      final SnackBar snackBar = SnackBar(
-        content: Text("Erro: $e"),
-        duration: const Duration(seconds: 3),
+    } on FirebaseAuthException {
+      const SnackBar snackBar = SnackBar(
+        content: Text("Encontramos um erro :("),
+        duration: Duration(seconds: 3),
       );
+      snackbarKey.currentState?.showSnackBar(snackBar);
     }
   }
 
@@ -162,11 +164,19 @@ class _NewUserPageState extends State<NewUserPage> {
   // users com o uid do usuário criado
   // Contém nome, email e link da foto de perfil
   Future createUserDB() async {
-    await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
-      'name': _nameController.text.trim(),
-      'email': _emailController.text.trim(),
-      'isVerified': false,
-    });
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+        'name': _nameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'isVerified': false,
+      });
+    } catch (e) {
+      const SnackBar snackBar = SnackBar(
+        content: Text("Encontramos um erro :("),
+        duration: Duration(seconds: 3),
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
+    }
   }
 
   void showPassword() {

@@ -1,5 +1,6 @@
 // package do Flutter
 
+import 'package:desafio_capyba/core/globals/global_key.dart';
 import 'package:flutter/material.dart';
 // Dependência do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,8 +37,13 @@ class SignIn {
         Navigator.of(context).pop();
         Navigator.pushNamedAndRemoveUntil(context, '/navbar', (route) => true);
       });
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       Navigator.of(context).pop();
+      const SnackBar snackBar = SnackBar(
+        content: Text("Encontramos um erro :("),
+        duration: Duration(seconds: 3),
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:desafio_capyba/core/globals/global_key.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class GetUserInfo {
   // Variáveis locais
@@ -39,6 +41,12 @@ class GetUserInfo {
     }
 
     /// catch capta erros e retorna em um CustomSnackBar no rodapé da tela.
-    catch (e) {}
+    catch (e) {
+      const SnackBar snackBar = SnackBar(
+        content: Text("Encontramos um erro :("),
+        duration: Duration(seconds: 3),
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
+    }
   }
 }

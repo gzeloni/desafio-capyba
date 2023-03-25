@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/core/camera/get_camera_list.dart';
+import 'package:desafio_capyba/core/globals/global_key.dart';
 import 'package:desafio_capyba/src/functions/get_user_info.dart';
 import 'package:desafio_capyba/src/models/custom_list_tile/custom_list_tile.dart';
 import 'package:desafio_capyba/src/screens/camera_screen.dart';
@@ -60,11 +61,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 /// cancelar a operação sem receber erros.
                 GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => TakePictureScreen(
-                              camera: getCameraList.firstCamera,
-                              user: userInfo.user,
-                            )));
+                    try {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => TakePictureScreen(
+                                camera: getCameraList.firstCamera,
+                                user: userInfo.user,
+                              )));
+                    } catch (e) {
+                      const SnackBar snackBar = SnackBar(
+                        content: Text("Encontramos um erro :("),
+                        duration: Duration(seconds: 3),
+                      );
+                      snackbarKey.currentState?.showSnackBar(snackBar);
+                    }
                   },
                   child: Container(
                     width: 200,
@@ -144,15 +153,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   /// Usa os parâmetros solicitados para atualizar um item do Firebase Firestore
   Future updateUserDB(String field, TextEditingController controller) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userInfo.user.uid)
-        .update({
-      field: controller.text.trim(),
-    });
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userInfo.user.uid)
+          .update({
+        field: controller.text.trim(),
+      });
+    } catch (e) {
+      const SnackBar snackBar = SnackBar(
+        content: Text("Encontramos um erro :("),
+        duration: Duration(seconds: 3),
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
+    }
   }
 
   Future verifyEmail() async {
-    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    try {
+      await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+    } catch (e) {
+      const SnackBar snackBar = SnackBar(
+        content: Text("Encontramos um erro :("),
+        duration: Duration(seconds: 3),
+      );
+      snackbarKey.currentState?.showSnackBar(snackBar);
+    }
   }
 }
