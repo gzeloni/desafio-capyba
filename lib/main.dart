@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:desafio_capyba/core/globals/globals.dart';
 import 'package:desafio_capyba/src/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,7 +17,6 @@ Future<void> main() async {
     MaterialApp(
       theme: ThemeData.dark(),
       home: const CheckLogin(),
-      scaffoldMessengerKey: snackbarKey,
       routes: routes,
       initialRoute: '/checkLogin',
       debugShowCheckedModeBanner: false,

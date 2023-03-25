@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/core/camera/get_camera_list.dart';
-import 'package:desafio_capyba/core/globals/globals.dart';
 import 'package:desafio_capyba/src/models/welcome_message/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class _NewUserPageState extends State<NewUserPage> {
   User? user;
   UserCredential? result;
   // booleano para controlar a obscureText do campo de senha
-  bool _showPassword = true;
+  final bool _showPassword = true;
 
   @override
   void initState() {
@@ -156,7 +155,6 @@ class _NewUserPageState extends State<NewUserPage> {
         content: Text("Erro: $e"),
         duration: const Duration(seconds: 3),
       );
-      snackbarKey.currentState?.showSnackBar(snackBar);
     }
   }
 

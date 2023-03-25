@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:desafio_capyba/core/camera/get_camera_list.dart';
-import 'package:desafio_capyba/src/functions/check_email.dart';
 import 'package:desafio_capyba/src/functions/get_user_info.dart';
 import 'package:desafio_capyba/src/models/custom_list_tile/custom_list_tile.dart';
 import 'package:desafio_capyba/src/screens/camera_screen.dart';

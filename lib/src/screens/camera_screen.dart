@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:desafio_capyba/core/globals/globals.dart';
 import 'package:desafio_capyba/src/models/loading_windows/camera_loading_window.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -100,13 +99,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                   try {
                     await _initializeControllerFuture;
                     uploadImage();
-                  } catch (e) {
-                    final SnackBar snackBar = SnackBar(
-                      content: Text("Erro: $e"),
-                      duration: const Duration(seconds: 3),
-                    );
-                    snackbarKey.currentState?.showSnackBar(snackBar);
-                  }
+                  } catch (e) {}
                 },
                 child: const Icon(
                   Icons.camera_alt,
@@ -159,12 +152,6 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         Navigator.pushNamedAndRemoveUntil(context, '/navbar', (route) => false);
       });
       // Se houver falha no upload:
-    } catch (e) {
-      final SnackBar snackBar = SnackBar(
-        content: Text("Erro: $e"),
-        duration: const Duration(seconds: 3),
-      );
-      snackbarKey.currentState?.showSnackBar(snackBar);
-    }
+    } catch (e) {}
   }
 }

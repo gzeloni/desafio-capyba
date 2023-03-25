@@ -1,11 +1,10 @@
 // package do Flutter
-import 'package:desafio_capyba/core/globals/globals.dart';
+
 import 'package:flutter/material.dart';
 // Dependência do Firebase
 import 'package:firebase_auth/firebase_auth.dart';
 // NavBar LoadingWindow
 import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
-import 'package:desafio_capyba/src/navbar/navbar.dart';
 
 class SignIn {
   /// Essas variáveis recebem dados da
@@ -39,11 +38,6 @@ class SignIn {
       });
     } on FirebaseAuthException catch (e) {
       Navigator.of(context).pop();
-      final SnackBar snackBar = SnackBar(
-        content: Text("Erro: $e"),
-        duration: const Duration(seconds: 3),
-      );
-      snackbarKey.currentState?.showSnackBar(snackBar);
     }
   }
 }

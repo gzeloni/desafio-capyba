@@ -1,5 +1,4 @@
 import 'package:desafio_capyba/src/models/loading_windows/loading_window.dart';
-import 'package:desafio_capyba/src/screens/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
