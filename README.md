@@ -1,17 +1,10 @@
-# desafio_capyba
+## Desafio de criação de aplicativo Capyba Software
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# desafio-capyba
+- [x] Tela de Login
+- [x] Tela de novo usuário
+- [x] Selfie para o perfil
+- [x] Tela Home
+- [x] Tela de conteúdo restrito a usuários com email verificado
+- [x] Navbar com Drawer para o perfil
+- [x] Edição completa do perfil
+- [x] Comunicação com o Firebase e regras de leitura e escrita limitadas a usuários logados
